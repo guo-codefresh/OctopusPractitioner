@@ -95,7 +95,7 @@ jobs:
 
       - name: package website
         id: "website_package"
-        uses: OctopusDeploy/create-zip-package-action@v3
+        uses: OctopusDeploy/create-zip-package-action@v4
         with:
           package_id: Trident.Web
           version: ${{ steps.ReleaseNum.outputs.APP_VERSION }}  
@@ -105,7 +105,7 @@ jobs:
     
       - name: package database
         id: "database_package"
-        uses: OctopusDeploy/create-zip-package-action@v3
+        uses: OctopusDeploy/create-zip-package-action@v4
         with:
           package_id: Trident.Database
           version: ${{ steps.ReleaseNum.outputs.APP_VERSION }}  
@@ -114,19 +114,19 @@ jobs:
           output_folder: packaged
       
       - name: Upload artifacts to GitHub
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: assets-for-download
           path: packaged
           
       - name: push packages to Octopus
-        uses: OctopusDeploy/push-package-action@v3
+        uses: OctopusDeploy/push-package-action@v4
         with:
           packages: |
             packaged/**/*.zip
 
       - name: push build information to Octopus
-        uses: OctopusDeploy/push-build-information-action@v3
+        uses: OctopusDeploy/push-build-information-action@v4
         with:
           packages: |
             Trident.Database
@@ -134,7 +134,7 @@ jobs:
           version: ${{ steps.ReleaseNum.outputs.APP_VERSION }}
             
       - name: create release
-        uses: OctopusDeploy/create-release-action@v3
+        uses: OctopusDeploy/create-release-action@v4
         with:
           project: ${{ env.OCTOPUS_PROJECT_NAME }}
           channel: ${{ steps.ReleaseNum.outputs.OCTOPUS_CHANNEL }}
@@ -142,7 +142,7 @@ jobs:
           package_version: ${{ steps.ReleaseNum.outputs.APP_VERSION }}
       
       - name: deploy release
-        uses: OctopusDeploy/deploy-release-action@v3
+        uses: OctopusDeploy/deploy-release-action@v4
         id: "deploy_release"
         with:
           project: ${{ env.OCTOPUS_PROJECT_NAME }}
